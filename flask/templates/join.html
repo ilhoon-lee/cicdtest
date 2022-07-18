@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #fbe2c6;
+        }
+        .back_img {
+            position: fixed;
+            z-index: -1;
+            margin-top: -50px;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://recipe-thumbnail.s3.ap-northeast-2.amazonaws.com/back.jpg');
+            background-repeat: repeat;
+            opacity: 0.15;
+            background-size: 100%;
+        }
+        ul,
+        li {
+            list-style: none;
+            margin-top: 3px;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }        
+        .register{
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            margin: 50px auto 0;
+            padding: 45px 45px;
+            background: white;
+            color: #2b2e4a;
+            font-size: 14px;
+            text-align: left;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+        .register h3{
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .register input{
+            width: 100%;
+            height: 40px;
+            outline: none;
+            padding: 10px;
+            border: 1px solid #707070;
+            transition: 0.3s;
+        }
+        .register input:valid, .register input:focus{
+            border: 1px solid #2b2e4a;
+        }
+        .register .center{
+            display: flex;
+            align-items: center;
+            min-width: 60px;
+        }
+        .register .flex{
+            display: flex;
+            flex-direction: column;
+        }
+        .register .flex .container{
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            margin-bottom: 10px;
+        }
+        .register .flex .container .item:first-child{
+           margin-right: 10px;
+        }
+        .register .flex .container .item .idcheck{
+            height: 100%;
+            margin-left: 10px;
+            padding: 5px 15px;
+            background: #2b2e4a;
+            border: 1px solid #2b2e4a;
+            color: white;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+        .register .flex .container .item .idcheck:hover{
+            background: white;
+            color: #2b2e4a;
+        }
+        .register .flex .container .item select{
+            height: 40px;
+            padding: 10px;
+            border: 1px solid #2b2e4a;
+        }
+        .register .submit{
+            width: 100%;
+            height: 70px;
+            font-size: 12pt;
+            color: white;
+            border: none;
+            border: 1px solid #2b2e4a;
+            border-radius: 15px;
+            background: #2b2e4a;
+            transition: 0.3s;
+        }
+        .register .flex .container:last-child{
+            margin: 0;
+        }
+        .register .submit:hover{
+            width: 100%;
+            height: 70px;
+            border: none;
+            border: 1px solid #2b2e4a;
+            color: #2b2e4a;
+            background: white;
+        }
+    </style>
+    <script>
+        function check_pw(){
+            if(document.getElementById('pw').value !='' && document.getElementById('pw2').value!=''){
+                if(document.getElementById('pw').value==document.getElementById('pw2').value){
+                    document.getElementById('check').innerHTML='일치합니다'
+                    document.getElementById('check').style.color='blue';
+                }
+                else{
+                    document.getElementById('check').innerHTML='일치하지 않습니다';
+                    document.getElementById('check').style.color='red';
+                }
+            }
+        }
+    </script>
+    <title>love kkanbu</title>
+</head>
+<body>
+    <div class="back_img"></div>
+    {%with messages = get_flashed_messages()%}
+        {%if messages %}
+            <script type="text/javascript">
+            alert("{{messages[-1]}}");
+            </script>
+        {%endif%}
+    {%endwith%}
+    <div class="register">
+        <h3>회원가입</h3>
+        <form action="join" method="post">
+            <div class="flex">
+                <input style="display: none;" type="text" name=id_flag value="{{id_flag}}">
+                <input style="display: none;" type="text" name=id_temp value="{{id_temp}}">
+                <input style="display: none;" type="text" name=nick_flag value="{{nick_flag}}">
+                <input style="display: none;" type="text" name=nick_temp value="{{nick_temp}}">
+                <ul class="container">
+                    <li class="item center">
+                        아이디
+                    </li>
+                    <li class="item">
+                        <input type="text" name="userid" placeholder="아이디를 입력하세요." value="{{userid}}" autofocus required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        비밀번호
+                    </li>
+                    <li class="item">
+                        <input type="password" id="pw" name="password" placeholder="비밀번호를 입력하세요." onchange="check_pw()" required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        비밀번호 확인
+                    </li>
+                    <li class="item">
+                        <input type="password" id="pw2" placeholder="비밀번호를 재입력하세요." onchange="check_pw()" required>
+                    </li>
+                    <li class="item">
+                        &nbsp;<span id="check"></span>
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        닉네임
+                    </li>
+                    <li class="item">
+                        <input type="text" name="nickname" value="{{nickname}}" required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        이름
+                    </li>
+                    <li class="item">
+                        <input type="text" name="username" placeholder="홍길동" value="{{username}}" required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        주소
+                    </li>
+                    <li class="item">
+                        <input type="text" name="address" placeholder="서울특별시 강남구 대치동" value="{{address}}" required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        생년월일
+                    </li>
+                    <li class="item">
+                        <input type="date" name="birthday" value="{{birthday}}" max="{{today}}" required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        성별
+                    </li>
+                    <li class="item">
+                        <select name="gender" id="">
+                            <option value="선택" selected>선택</option>
+                            <option value="남성">남성</option>
+                            <option value="여성">여성</option>
+                        </select>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        전화번호
+                    </li>
+                    <li class="item">
+                        <input type="text" name="phone_number" placeholder="휴대전화번호" value="{{phone_number}}" required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        이메일
+                    </li>
+                    <li class="item">
+                        <input type="text" name="email" placeholder="anyway@gmail.com" value="{{email}}" required>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+                <ul class="container">
+                    <li class="item center">
+                        
+                    </li>
+                    <li class="item">
+                        <button class="submit"><b>next: 취향 분석</b></button>
+                    </li>
+                    <li class="item">
+                        
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

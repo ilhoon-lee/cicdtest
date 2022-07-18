@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>love kkanbu</title>
+    <style>
+        body {
+            background-color: #fbe2c6;
+            padding: 0px;
+            margin: 0px;
+        }
+        div {
+            text-align: center;
+        }
+        .outer {
+            display: inline-flex;
+            align-items: center;
+            margin: 5px;
+            padding: 10px;
+            /*background-color: rgba(70, 70, 70, 0.2);*/
+            width: 500px;
+            height: 380px;
+        }
+        .inner{
+            margin: 0px auto;
+            /*background-color: rgba(238, 130, 238, 0.349);*/
+            width: 480px;
+            height: 370px;
+        }
+        .back_img {
+            position: fixed;
+            margin-top: -70px;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://recipe-thumbnail.s3.ap-northeast-2.amazonaws.com/back.jpg');
+            background-repeat: repeat;
+            opacity: 0.15;
+            background-size: 100%;
+        }
+        p {
+            text-align: center;
+        }
+        b {
+            font-size: 16pt;
+        }
+        a img {
+            border-radius: 15px;
+            max-width: 250px;
+        }
+        a img:hover {
+            transform: scale(1.1);
+            transition: 0.3s;
+        }
+        a img:active {
+            transform: scale(0.9);
+            transition: 0.3s;
+        }
+        button {
+            color: white;
+            border: 0pt;
+            border-radius: 6px;
+            background-color: rgb(218, 153, 141);
+            width: 200px;
+            height: 50px;
+            font-size: 15pt;
+        }
+        button:hover {
+            transform: scale(1.01);
+            transition: 0.1s;
+        }
+        button:active {
+            transform: scale(0.9);
+            transition: 0.1s;
+        }
+        textarea {
+            padding: 30px;
+            border-radius: 5px;
+            min-height: 150px;
+            max-height: 150px;
+            width: 75%;
+            font-size: 15pt;
+            font-weight: 600;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .box_info{
+            width: 75%;
+            min-width: 250px;
+            max-width: 550px;
+            padding: 20px 30px;
+            background-color: white;
+            border-radius: 10px;
+            margin: 70px auto;
+        }
+        .ingredient_box {
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 15px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="back_img"></div>
+    <div>
+        <div class='box_info'>
+            <h2>
+                <b style="font-size: 20pt;">
+                    {% for f in friend %}
+                    <p style="display: inline-block; margin-right: 5px;">{{f}}</p>
+                    {% endfor%}
+                    님께 메세지 보내기
+                </b>
+            </h2>
+    
+        
+        
+            <p><b>{{ title }}</b></p>
+            <a href="https://m.10000recipe.com/recipe/{{num}}" onclick="window.open(this.href, '_blank', 'width=800, height=600'); return false;">
+                <img src="{{img}}">
+            </a>
+        
+
+            <form action='sendmail2' method="post">
+                {% for f in friend %}
+                <input type="text" value="{{f}}" name="friend" style="display: none;">
+                {% endfor %}
+                <input type="text" value="{{num}}" name="num" style="display: none;">
+                <span><b>날짜</b></span>
+                <input type="date" id="datefield" name="date" style="margin-right: 20px;" min="{{today}}" required>
+                <div style="display: inline-block;">
+                    <span style="margin-right: 5px;"><b>시간</b></span>
+                    <input type="time" name="time" required>
+                </div>
+                <p><b>장소 및 메세지</b></p>
+                <textarea name="text" te></textarea>
+                <div>
+                    <button style="margin-bottom: 100px;">메세지 보내기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

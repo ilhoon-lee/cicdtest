@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jua">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Sans Korea">
+    <title>love kkanbu</title>
+    <style>
+        body {
+            font-family: "Noto Sans Korea";
+            background-color: #fbe2c6;
+            padding: 0px;
+            margin: 0px;
+        }
+        .back_img {
+            position: fixed;
+            margin-top: -100px;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://recipe-thumbnail.s3.ap-northeast-2.amazonaws.com/back.jpg');
+            background-repeat: repeat;
+            opacity: 0.15;
+            background-size: 100%;
+            z-index: -1;
+        }
+        .big_title {
+            font-family: Jua;
+        }
+        .sub_title {
+            font-family: Jua;
+        }
+        .box_info{
+            width: 75%;
+            min-width: 250px;
+            padding: 20px 30px;
+            background-color: white;
+            border-radius: 10px;
+            margin: 20px auto;
+        }
+        .box_back {
+            text-align: center;
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 15px;
+        }
+        .box_button { 
+            opacity: 1;
+            padding: 4px 6px;
+            margin: 0px 3px;
+            width: 70px;
+            border-radius: 7px;
+            background-color: white;
+            color: black;
+            font-size: 11pt;
+            font-weight: 600;
+        }
+        .box_button:hover {
+            transform: scale(1.04);
+            transition: 0.2s;
+        }
+        .box_button:active {
+            transform: scale(0.9);
+            transition: 0.1s;
+        }
+        b {
+            font-size: 16pt;
+        }
+        .recipe_propose_text{
+            display: inline-block;
+            margin: 2px 2px
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    {%with messages = get_flashed_messages()%}
+          {%if messages %}
+              <script type="text/javascript">
+              alert("{{messages[-1]}}");
+              </script>
+          {%endif%}
+      {%endwith%}
+    <div class="back_img"></div>
+    <div style="margin-top: 100px;">
+        <h2 style="text-align: center; margin-bottom: 40px;"><b style="font-size: 20pt;">{{user}}님의 페이지</b></h2>
+        <div class='box_info'>
+            <p class="big_title"><b># 내 재료 관리</b></p>
+            {% for x in range(ing_li|length) %}
+            <div class='box_back' style="background-color: {{ing_ex_color[x]}};">
+                <span style="font-size: 15px;"><b>{{ing_li[x]}}</b></span>
+                <span>{{ing_ex_li[x]}}일</span>
+            </div>
+            {% endfor %}
+            <form action="ingredient_manage" method="get">
+            </form>
+        </div>
+        <div class='box_info'>
+            <p class="big_title"><b># 나의 깐부들</b></p>
+            {% for f in friend_list %}
+            <div class='box_back'>
+                <span style="font-size: 15px;"><b>{{f}}</b></span>
+                <form action="friend_delete" method="post" style="display: inline-block;">
+                    <input type="text" value="{{f}}" name="friend" style="display: none;"></input>
+                    <button type="submit" class="box_button">삭제</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <div class='box_info'>
+            <p class="big_title"><b># 메세지 관리</b></p>
+            <p style="margin-left: 20px;" class="sub_title"><b>깐부 요청</b></p>
+            {% for f in friend_message %}
+            <div class='box_back'>
+                <span style="font-size: 15px;"><b>{{f}}</b></span>
+                <div style="display: flex; justify-content: space-around;">
+                    <form action="friend_accept" method="post" style="display: inline-block; margin: 0px 5px; margin-top: 10px;">
+                        <input type="text" value="{{f}}" name="friend" style="display: none;"></input>
+                        <input type="text" value="yes" name="accept" style="display: none;"></input>
+                        <button type="submit" class="box_button">수락</button>
+                    </form>
+                    <form action="friend_accept" method="post" style="display: inline-block; margin: 0x 5px; margin-top: 10px;">
+                        <input type="text" value="{{f}}" name="friend" style="display: none;"></input>
+                        <input type="text" value="no" name="accept" style="display: none;"></input>
+                        <button type="submit" class="box_button">거절</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            <br>
+            <p style="margin-left: 20px;" class="sub_title"><b>레시피 요청</b></p>
+            {% for x in range(promise_code|length) %}
+            <div class='box_back' style="text-align: left;">
+                <p class="recipe_propose_text"><b>{{senderage[x]}}세, </b></p>
+                <p class="recipe_propose_text"><b>{{sendersex[x]}}인 </b></p>
+                <p class="recipe_propose_text"><b>{{senderid[x]}}님께서 </b></p>
+                <p class="recipe_propose_text"><b><a href="https://m.10000recipe.com/recipe/{{recipenum[x]}}" onclick="window.open(this.href, '_blank', 'width=800, height=600'); return false;">레시피</a>를 제안했어요 </b></p>
+                <br><br>
+                <p class="recipe_propose_text"><b>날짜: {{promisedate[x]}} </b></p><br>
+                <p class="recipe_propose_text"><b>시간: {{priomisetime[x]}} </b></p><br>
+                <p class="recipe_propose_text"><b>내용: {{messages[x]}} </b></p>
+                <br><br>
+                <p class="recipe_propose_text"><b style="font-size: 14pt;"># 내 사용 재료는</b></p>
+                <p class="recipe_propose_text"><b style="color: #df0cbc; font-size: 14pt; margin-left: 15px;">{{myingruse[x]}}</b></p>
+                <br>
+                <div style="display: flex; justify-content: space-around;">
+                    <form action="recipe_accept" method="post" style="display: inline-block; margin: 0px 5px; margin-top: 10px;">
+                        <input type="text" value="{{promise_code[x]}}" name="promise_num" style="display: none;">
+                        <input type="text" value="{{senderid[x]}}" name="sender" style="display: none;"></input>
+                        <input type="text" value="yes" name="accept" style="display: none;"></input>
+                        <button class="box_button">수락</button>
+                    </form>
+                    <form action="recipe_accept" method="post" style="display: inline-block; margin: 0x 5px; margin-top: 10px;">
+                        <input type="text" value="{{promise_code[x]}}" name="promise_num" style="display: none;">
+                        <input type="text" value="{{senderid[x]}}" name="sender" style="display: none;"></input>
+                        <input type="text" value="no" name="accept" style="display: none;"></input>
+                        <button class="box_button">거절</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+        <div class='box_info'>
+            <p class="big_title"><b># 약속 관리</b></p>
+            {% for x in range(remaindays2|length) %}
+            <div class='box_back' style="text-align: left;">
+                <p class="recipe_propose_text"><b>{{age2[x]}}세, </b></p>
+                <p class="recipe_propose_text"><b>{{sex2[x]}}인 </b></p>
+                <p class="recipe_propose_text"><b>{{kkanbu2[x]}}님과의 약속이 </b></p>
+                {% if remaindays2[x] > 0 %}
+                <p class="recipe_propose_text"><b>{{remaindays2[x]}}일 남았습니다 </b></p>
+                {% else %}
+                <p class="recipe_propose_text"><b>{{remaintime2[x]}}시간 남았습니다 </b></p>
+                {% endif %}
+                <br><br>
+                <p class="recipe_propose_text"><b>날짜: {{promisedate2[x]}} </b></p><br>
+                <p class="recipe_propose_text"><b>시간: {{promisetime2[x]}}</b></p>
+                <br><br>
+                <p class="recipe_propose_text"><b>해먹을 요리의</b></p>
+                <p class="recipe_propose_text"><b><a href="https://m.10000recipe.com/recipe/{{recipenum2[x]}}" onclick="window.open(this.href, '_blank', 'width=800, height=600'); return false;">레시피 보기</a></b></p>
+                <p class="recipe_propose_text"><b><a  href="https://www.youtube.com/results?search_query={{rectitle2[x]}}" onclick="window.open(this.href, '_blank', 'width=800, height=600'); return false;">YouTube 검색</a></b></p>
+                <br><br>
+                <p class="recipe_propose_text"><b style="font-size: 14pt;"># 더 필요한 재료는</b></p><br>
+                <p class="recipe_propose_text"><b style="color: #df0cbc; font-size: 14pt; margin-left: 15px;">{{groupneed2[x]}}</b></p><br>
+                <p class="recipe_propose_text"><b style="font-size: 14pt;"># 내 사용 재료는</b></p><br>
+                <p class="recipe_propose_text"><b style="color: #df0cbc; font-size: 14pt; margin-left: 15px;">{{myingr2[x]}}</b></p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

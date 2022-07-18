@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #fbe2c6;
+            margin: 0%;
+            padding: 0%;
+        }
+        .back_img {
+            position: fixed;
+            z-index: -1;
+            margin-top: -30px;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://recipe-thumbnail.s3.ap-northeast-2.amazonaws.com/back.jpg');
+            background-repeat: repeat;
+            opacity: 0.15;
+            background-size: 100%;
+        }
+        div {
+            text-align: center;
+        }
+        button {
+            padding: 0px;
+            border-radius: 40px;
+            margin: 10px;
+            border: 0;
+            font-size: 0;
+        }
+        button img {
+            width: 120px;
+            height: 120px;
+            border-radius: 40px;
+            margin: 0;
+        }
+        button img:hover {
+            transform: scale(1.1);
+            transition: 0.3s;
+        }
+        button img:active {
+            transform: scale(0.9);
+            transition: 0.1s;
+        }
+        form {
+            display: inline-block;
+            padding: 10px;
+        }
+        form input {
+            display: none;
+        }
+        .recipe_title {
+            color: white;
+            border-radius: 6px;
+            background-color: rgb(230, 95, 71);
+            width: 120px;
+            margin: 0px auto;
+        }
+    </style>
+    <title>love kkanbu</title>
+</head>
+<body>
+    <div class="back_img"></div>
+    <div style="margin: 0px auto; width: 100%;">
+    <h2 style="margin-top: 30px; text-align: center;"><b>좋아하는 음식을 알려주세요!</b></h2><p style="font-size: 13pt; text-align: center;"><b>(진행도 : {{choice+1}}/10)</b></p>
+    </div>
+    <div style="max-width: 800px; margin: 0px auto; margin-bottom: 40px;">    
+        {% for x in range(10) %}
+        <div style="display: inline-block;">
+            <form action="select" method="post">
+                <input type="text" name="choice" value={{ img_values[x] }}>
+                <button><img src={{ img_list[x] }}></button>
+            </form>
+            <p class='recipe_title'><b>{{ img_titles[x] }}</b></p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

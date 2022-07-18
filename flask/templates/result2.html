@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>love kkanbu</title>
+    <style>
+        body {
+            background-color: #fbe2c6;
+            padding: 0px;
+            margin: 0px;
+        }
+        .back_img {
+            position: fixed;
+            margin-top: -20px;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://recipe-thumbnail.s3.ap-northeast-2.amazonaws.com/back.jpg');
+            background-repeat: repeat;
+            opacity: 0.15;
+            background-size: 100%;
+            z-index: -1;
+        }
+        div {
+            text-align: center;
+        }
+        .box_info{
+            width: 75%;
+            min-width: 250px;
+            padding: 20px 30px;
+            background-color: white;
+            border-radius: 10px;
+            margin: 20px auto;
+        }
+        .ingredient_box {
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 15px;
+        }
+        p {
+            text-align: center;
+        }
+        b {
+            font-size: 16pt;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="back_img"></div>
+    <div>
+        {% if friends %}
+        <h2><b style="font-size: 20pt; margin-top: 20px;">
+            {% for f in friends%}
+            <p style="display: inline-block; margin-right: 5px;">{{f}}님</p>
+            {% endfor %}
+            과 깐부 레시피는
+        </b></h2>
+        {% else %}
+        <h2><b style="font-size: 20pt; margin-top: 20px;">추천받은 레시피는</b></h2>
+        {% endif %}
+        
+        <div class='box_info'>
+            <p><b>레시피 제목: {{title}}</b></p>
+            <a href="https://m.10000recipe.com/recipe/{{num}}" onclick="window.open(this.href, '_blank', 'width=800, height=600'); return false;">
+                <img src="{{img}}">
+            </a>
+            <br>
+            <p>필요한 재료</p>
+            {% for buy_ing in groupby %}
+            <p style="display: inline-block;">{{buy_ing}}</p>
+            {% endfor %}
+            <br>
+            <p>사용 가능</p>
+            {% for x in range(users|length) %}
+                <p>{{users[x]}}님의 재료</p>
+                {% for i in exingr[x] %}
+                <p style="display: inline-block;">{i} </p>
+                {% endfor %}
+            {% endfor %}
+            
+            <p></p>
+
+            <p></p>
+            <p></p>
+            <p></p>
+        </div>
+        <div class='box_info'>
+            <p><b> 메세지 관리</b></p>
+        </div>
+        <div class='box_info'>
+            <p><b> 약속 관리</b></p>
+        </div>
+    </div>
+</body>
+</html>

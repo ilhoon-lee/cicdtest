@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html> 
+    <head> 
+        <meta charset="UTF-8" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jua">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto Sans Korea">
+        <link href="https://recipe-thumbnail.s3.ap-northeast-2.amazonaws.com/kkanbu.css" rel="stylesheet" >
+        <title>love kkanbu</title>
+        <style>
+            body {
+                background-color: #fbe2c6;
+                margin: 0px;
+                padding: 0px 10px;
+            }
+            .back_img {
+                position: fixed;
+                margin-left: -10px;
+                z-index: -1;
+                margin-top: -100px;
+                width: 100%;
+                height: 100%;
+                background-image: url('https://recipe-thumbnail.s3.ap-northeast-2.amazonaws.com/back.jpg');
+                background-repeat: repeat;
+                opacity: 0.15;
+                background-size: 100%;
+            }
+            .add_button {
+                color: white;
+                border: 0pt;
+                border-radius: 6px;
+                background-color: rgb(238, 86, 59);
+                width: 30px;
+                height: 30px;
+                font-size: 15pt;
+                margin-left: 20px;
+            }
+            .add_button:hover {
+                transition: 0.3s;
+                transform: scale(1.05);
+                background-color: rgb(255, 137, 116);
+            }
+            .add_button:active {
+                transition: 0.1s;
+                transform: scale(0.9);
+                background-color: rgb(175, 45, 22);
+            }
+            form {
+                margin-top: 0px auto;
+                width: 100%;
+                text-align: center;
+            }
+            form input {
+                font-size: 15px;
+                width: 150px;
+                height: 30px;
+                margin: 10px;
+                display: inline-block;
+            }
+            h2 em {
+                font-family: 'Jua';
+                font-size: 20pt;
+            }
+            img {
+                width: 100%;
+                max-width: 500px;
+            }
+            .list {
+                display: inline-block;
+                font-family: 'Noto Sans Korea';
+                font-size: 12pt;
+                border-radius: 5px;
+                background-color: white;
+                border: 4px orange solid;
+                text-align: center;
+                width: 140px;
+                margin-right: 0px;
+            }
+            .rm {
+                color: white;
+                width: 50px;
+                border: 0pt;
+                border-radius: 6px;
+                background-color: orange;
+                font-family: 'Noto Sans Korea';
+                font-size: 11pt;
+                margin-left: 0px;
+            }
+            .rm:hover {
+                transition: 0.3s;
+                transform: scale(1.05);
+                background-color: rgb(255, 196, 86);
+            }
+            .rm:active {
+                transition: 0.1s;
+                transform: scale(0.9);
+                background-color: rgb(185, 121, 0);
+            }
+            .submit_button {
+                margin-top: 20px;
+                color: white;
+                font-family: 'Noto Sans Korea';
+                font-size: 14pt;
+                border: 0pt;
+                border-radius: 6px;
+                background-color: rgb(238, 86, 59);
+                height: 50px;
+            }
+            .submit_button:hover {
+                transition: 0.3s;
+                transform: scale(1.05);
+                background-color: rgb(255, 137, 116);
+            }
+            .submit_button:active {
+                transition: 0.1s;
+                transform: scale(0.9);
+                background-color: rgb(175, 45, 22);
+            }
+        </style>
+        <script>
+            const add_textbox = () => {
+                const box = document.getElementById("box");
+                const newP = document.createElement('span');
+                newP.innerHTML = "<input class='list' type='text' name='ingredient'> <input class='rm' type='button' value='삭제' onclick='remove(this)'>";
+                box.appendChild(newP);
+            }
+            const remove = (obj) => {
+                document.getElementById('box').removeChild(obj.parentNode);
+            }
+        </script>
+        
+    </head> 
+    <body>
+        <div class="back_img"></div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container-fluid">
+                <button class="btn btn-primary" id="sidebarToggle" onclick="location.href='{{ url_for('upload') }}'">◀ 뒤로가기</button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    {% if login_flag %}
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <span style="text-align: center; font-size: 13pt; margin-top: 6px; color: white;"><b>안녕하세요! {{ user }}님</b></span>
+                            <li class="nav-item active"><a class="nav-link" href="{{ url_for('logout') }}">로그아웃</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('mypage') }}">마이페이지</a></li>
+                        </ul>
+                    {% else %}
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <li class="nav-item active"><a class="nav-link" href="{{ url_for('login') }}">로그인</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <div style="max-width: 500px; margin: 0px auto; background-color: white; border-radius: 20px; padding: 20px 30px; margin-top:100px;">
+            <h2><em># 재료 (ingredients)</em></h2>
+            <form action="ing_save" method="post">    
+                <div style="display: inline-block; margin: 0px auto;">
+                {% for value in values %}
+                <input type="text" class="list" name="ingredient" value={{ value }}>
+                {% endfor %}
+                </div>
+                <h2 style="text-align: left;"><em># 추가</em><button type="button" class="add_button" id="add" onclick="add_textbox()">+</button></h2>
+                <div id="box" style="display: inline-block;"></div>
+                <input class='submit_button' type="submit" value="재료 등록하기">
+            </form>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    </body> 
+</html>
